@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,7 +24,6 @@
             background: #f5f6fa;
         }
 
-        /* 导航栏 */
         .navbar {
             background: rgba(255, 255, 255, 0.95);
             padding: 1rem;
@@ -53,18 +51,16 @@
             color: var(--accent-color);
         }
 
-        /* 画廊布局 */
         .gallery {
             max-width: 1200px;
-            margin: 80px auto 40px;
+            margin: 80px auto 100px;
             padding: 0 20px;
-            columns: 3;
-            column-gap: 20px;
+            display: grid; /* 修改为grid布局 */
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
         }
 
         .photo-card {
-            break-inside: avoid;
-            margin-bottom: 20px;
             background: white;
             border-radius: 10px;
             overflow: hidden;
@@ -79,9 +75,9 @@
 
         .photo-img {
             width: 100%;
-            height: auto;
+            height: 200px;
+            object-fit: cover;
             display: block;
-            transition: transform 0.3s;
         }
 
         .photo-info {
@@ -99,7 +95,6 @@
             color: #7f8c8d;
         }
 
-        /* 模态框 */
         .modal {
             display: none;
             position: fixed;
@@ -121,86 +116,157 @@
             transform: translateY(-50%);
         }
 
-        /* 响应式设计 */
+        .pagination {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .page-btn {
+            background: none;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 5px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .current-page {
+            display: flex;
+            align-items: center;
+            min-width: 60px;
+            justify-content: center;
+            font-weight: 500;
+        }
+
         @media (max-width: 992px) {
             .gallery {
-                columns: 2;
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
         @media (max-width: 768px) {
             .gallery {
-                columns: 1;
+                grid-template-columns: 1fr;
             }
-
             .nav-links {
                 flex-direction: column;
                 align-items: center;
                 gap: 1rem;
             }
+            .pagination {
+                bottom: 10px;
+                padding: 8px 15px;
+            }
         }
     </style>
 </head>
-
 <body>
     <nav class="navbar">
         <div class="nav-links">
             <a href="about.html">关于我</a>
         </div>
     </nav>
-    <div class="gallery" id="gallery"></div> <!-- 保持空容器 -->
+    
+    <div class="gallery" id="gallery"></div>
+
+    <div class="pagination">
+        <button class="page-btn" id="prevPage">上一页</button>
+        <span class="current-page" id="pageInfo"></span>
+        <button class="page-btn" id="nextPage">下一页</button>
+    </div>
+
+    <div class="modal" id="imageModal">
+        <img class="modal-content" id="expandedImg">
+    </div>
 
     <script>
-        // 图片数据数组
         const photos = [
-            {
-                src: "imag/red.jpg",
-                title: "红叶",
-                desc: "摄于理工大学荷轩寝室楼下"
-            },
-            {
-                src: "imag/green.jpg",
-                title: "绿叶",
-                desc: "摄于理工大学德保食堂外"
-            },
-            {
-                src: "imag/pool.jpg",
-                title: "大水池子",
-                desc: "摄于理工大学两江校区"
-            },
-            {
-                src: "imag/fireflower.jpg",
-                title: "烟花",
-                desc: "摄于万灵古镇濑溪河畔"
-            },
-            {
-                src: "imag/fireflower.jpg",
-                title: "烟花",
-                desc: "摄于万灵古镇濑溪河畔"
-            },
-            // 继续添加更多图片...
+            { src: "imag/red.jpg", title: "红叶", desc: "摄于理工大学荷轩寝室楼下" },
+            { src: "imag/green.jpg", title: "绿叶", desc: "摄于理工大学德保食堂外" },
+            { src: "imag/pool.jpg", title: "大水池子", desc: "摄于理工大学两江校区" },
+            { src: "imag/fireflower.jpg", title: "烟花", desc: "摄于万灵古镇濑溪河畔" },
+            { src: "imag/sanxindui.jpg", title: "三星堆", desc: "摄于成都" },
+            { src: "imag/xiyang.jpg", title: "夕阳", desc: "摄于万灵古镇" },
+            { src: "imag/fukanwanling.jpg", title: "俯瞰万灵", desc: "摄于万灵古镇" },
+            { src: "imag/hua1.jpg", title: "花", desc: "摄于重庆理工大学两江校区操场旁" },
+            { src: "imag/shaokao1.jpg", title: "老姐", desc: "摄于涪陵" },
+            { src: "imag/shaokao2.jpg", title: "老姐", desc: "摄于涪陵" },
+            { src: "imag/guizhou2.jpg", title: "阿里西里大草原", desc: "摄于贵州" },
+            { src: "imag/guizhou1.jpg", title: "贵阳夜景", desc: "摄于贵州" },
+            { src: "imag/chongqin1.jpg", title: "重庆", desc: "摄于重庆" },
+            { src: "imag/hua2.jpg", title: "花", desc: "摄于重庆理工大学两江校区操场旁" },
+            { src: "imag/mingyuehu.jpg", title: "明月湖", desc: "摄于重庆两江新区明月湖" },
+            { src: "imag/qixi.jpg", title: "烟花", desc: "摄于万灵古镇濑溪河畔" }
         ];
 
-        // 动态生成画廊
+        let currentPage = 1;
+        const perPage = 6;
+        const totalPages = Math.ceil(photos.length / perPage);
         const gallery = document.getElementById('gallery');
 
-        photos.forEach(photo => {
-            const card = document.createElement('div');
-            card.className = 'photo-card';
+        function updateGallery() {
+            gallery.innerHTML = '';
+            const start = (currentPage - 1) * perPage;
+            const end = start + perPage;
 
-            card.innerHTML = `
-            <img src="${photo.src}" alt="${photo.title}" class="photo-img" loading="lazy">
-            <div class="photo-info">
-                <h3 class="photo-title">${photo.title}</h3>
-                <p class="photo-desc">${photo.desc}</p>
-            </div>
-        `;
+            photos.slice(start, end).forEach(photo => {
+                const card = document.createElement('div');
+                card.className = 'photo-card';
+                card.innerHTML = `
+                    <img src="${photo.src}" alt="${photo.title}" class="photo-img" loading="lazy">
+                    <div class="photo-info">
+                        <h3 class="photo-title">${photo.title}</h3>
+                        <p class="photo-desc">${photo.desc}</p>
+                    </div>
+                `;
+                gallery.appendChild(card);
+            });
 
-            gallery.appendChild(card);
+            document.getElementById('pageInfo').textContent = `${currentPage}/${totalPages}`;
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage === totalPages;
+        }
+
+        // 初始化页面
+        updateGallery();
+
+        // 分页按钮事件
+        document.getElementById('prevPage').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                updateGallery();
+            }
         });
 
-        // 使用事件委托处理点击事件（优化后的点击事件绑定）
-        document.getElementById('gallery').addEventListener('click', function (e) {
+        document.getElementById('nextPage').addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateGallery();
+            }
+        });
+
+        // 图片点击事件
+        document.getElementById('gallery').addEventListener('click', (e) => {
             if (e.target.classList.contains('photo-img')) {
                 const modal = document.getElementById('imageModal');
                 const modalImg = document.getElementById('expandedImg');
@@ -208,45 +274,24 @@
                 modalImg.src = e.target.src;
             }
         });
-        // 分页功能
-        let currentPage = 0;
-        const perPage = 12;
 
-        function showPage(page) {
-            const start = page * perPage;
-            const end = start + perPage;
-            photos.slice(start, end).forEach(/* 生成逻辑 */);
-        }
-    </script>
-
-    <!-- 模态框 -->
-    <div class="modal" id="imageModal">
-        <img class="modal-content" id="expandedImg">
-    </div>
-
-    <script>
-        // 图片点击放大功能
-        document.querySelectorAll('.photo-img').forEach(img => {
-            img.addEventListener('click', function () {
-                const modal = document.getElementById('imageModal');
-                const modalImg = document.getElementById('expandedImg');
-                modal.style.display = "block";
-                modalImg.src = this.src;
-            });
+        // 关闭模态框
+        document.getElementById('imageModal').addEventListener('click', () => {
+            document.getElementById('imageModal').style.display = "none";
         });
 
-        // 点击模态框关闭
-        document.getElementById('imageModal').addEventListener('click', function () {
-            this.style.display = "none";
-        });
-
-        // 键盘ESC关闭
+        // 键盘事件
         document.addEventListener('keydown', (e) => {
             if (e.key === "Escape") {
                 document.getElementById('imageModal').style.display = "none";
+            } else if (e.key === 'ArrowLeft' && currentPage > 1) {
+                currentPage--;
+                updateGallery();
+            } else if (e.key === 'ArrowRight' && currentPage < totalPages) {
+                currentPage++;
+                updateGallery();
             }
         });
     </script>
 </body>
-
 </html>
