@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QinMou的摄影世界</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --text-color: #34495e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: #f5f6fa;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* 画廊布局 */
+        .gallery {
+            max-width: 1200px;
+            margin: 80px auto 40px;
+            padding: 0 20px;
+            columns: 3;
+            column-gap: 20px;
+        }
+
+        .photo-card {
+            break-inside: avoid;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .photo-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s;
+        }
+
+        .photo-info {
+            padding: 15px;
+        }
+
+        .photo-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+
+        .photo-desc {
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+
+        /* 模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            cursor: zoom-out;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            margin: auto;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .gallery {
+                columns: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gallery {
+                columns: 1;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="about.html">关于我</a>
+        </div>
+    </nav>
+    <div class="gallery" id="gallery"></div> <!-- 保持空容器 -->
+
+    <script>
+        // 图片数据数组
+        const photos = [
+            {
+                src: "imag/red.jpg",
+                title: "红叶",
+                desc: "摄于理工大学荷轩寝室楼下"
+            },
+            {
+                src: "imag/green.jpg",
+                title: "绿叶",
+                desc: "摄于理工大学德保食堂外"
+            },
+            {
+                src: "imag/pool.jpg",
+                title: "大水池子",
+                desc: "摄于理工大学两江校区"
+            },
+            {
+                src: "imag/fireflower.jpg",
+                title: "烟花",
+                desc: "摄于万灵古镇濑溪河畔"
+            },
+            {
+                src: "imag/fireflower.jpg",
+                title: "烟花",
+                desc: "摄于万灵古镇濑溪河畔"
+            },
+            // 继续添加更多图片...
+        ];
+
+        // 动态生成画廊
+        const gallery = document.getElementById('gallery');
+
+        photos.forEach(photo => {
+            const card = document.createElement('div');
+            card.className = 'photo-card';
+
+            card.innerHTML = `
+            <img src="${photo.src}" alt="${photo.title}" class="photo-img" loading="lazy">
+            <div class="photo-info">
+                <h3 class="photo-title">${photo.title}</h3>
+                <p class="photo-desc">${photo.desc}</p>
+            </div>
+        `;
+
+            gallery.appendChild(card);
+        });
+
+        // 使用事件委托处理点击事件（优化后的点击事件绑定）
+        document.getElementById('gallery').addEventListener('click', function (e) {
+            if (e.target.classList.contains('photo-img')) {
+                const modal = document.getElementById('imageModal');
+                const modalImg = document.getElementById('expandedImg');
+                modal.style.display = "block";
+                modalImg.src = e.target.src;
+            }
+        });
+        // 分页功能
+        let currentPage = 0;
+        const perPage = 12;
+
+        function showPage(page) {
+            const start = page * perPage;
+            const end = start + perPage;
+            photos.slice(start, end).forEach(/* 生成逻辑 */);
+        }
+    </script>
+
+    <!-- 模态框 -->
+    <div class="modal" id="imageModal">
+        <img class="modal-content" id="expandedImg">
+    </div>
+
+    <script>
+        // 图片点击放大功能
+        document.querySelectorAll('.photo-img').forEach(img => {
+            img.addEventListener('click', function () {
+                const modal = document.getElementById('imageModal');
+                const modalImg = document.getElementById('expandedImg');
+                modal.style.display = "block";
+                modalImg.src = this.src;
+            });
+        });
+
+        // 点击模态框关闭
+        document.getElementById('imageModal').addEventListener('click', function () {
+            this.style.display = "none";
+        });
+
+        // 键盘ESC关闭
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape") {
+                document.getElementById('imageModal').style.display = "none";
+            }
+        });
+    </script>
+</body>
+
+</html>

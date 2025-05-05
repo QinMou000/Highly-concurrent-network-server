@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>页面迷路了 - 404</title>
+    <style>
+        :root {
+            --primary-color: #ff4757;
+            --secondary-color: #2ed573;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f1f2f6 0%, #dfe4ea 100%);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+            margin-bottom: -1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .message {
+            font-size: 1.5rem;
+            color: #2f3542;
+            margin: 2rem 0;
+            line-height: 1.6;
+        }
+
+        .home-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .home-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 213, 115, 0.4);
+        }
+
+        /* 装饰元素 */
+        .deco {
+            position: absolute;
+            opacity: 0.1;
+        }
+
+        .deco.d1 { top: 10%; left: 5%; animation: spin 20s linear infinite; }
+        .deco.d2 { bottom: 15%; right: 5%; animation: spin 25s linear infinite reverse; }
+        .deco.d3 { top: 30%; right: 20%; animation: spin 30s linear infinite; }
+
+        /* 动画 */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 5rem;
+            }
+            .message {
+                font-size: 1.2rem;
+            }
+            .deco {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 装饰元素 -->
+    <div class="deco d1">🌀</div>
+    <div class="deco d2">🌐</div>
+    <div class="deco d3">💫</div>
+
+    <div class="container">
+        <div class="error-code">404</div>
+        <h1 class="message">哎呀！我们好像迷路了...</h1>
+        <p class="message">
+            您寻找的页面可能已经去度假了<br>
+            或者从未存在过 - 谁知道呢？<br>
+            让我们带您回到安全的地方
+        </p>
+        <a href="/" class="home-btn">
+            🏡 返回首页
+        </a>
+    </div>
+
+    <script>
+        // 添加点击按钮的互动效果
+        document.querySelector('.home-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                window.location.href = this.href;
+            }, 200);
+        });
+
+        // 添加随机的背景动画元素
+        function createBubble() {
+            const bubble = document.createElement('div');
+            bubble.style.cssText = `
+                position: absolute;
+                width: ${Math.random() * 30 + 10}px;
+                height: ${Math.random() * 30 + 10}px;
+                background: rgba(255,71,87,${Math.random() * 0.3});
+                border-radius: 50%;
+                top: ${Math.random() * 100}%;
+                left: ${Math.random() * 100}%;
+                animation: floatUp ${Math.random() * 5 + 5}s linear infinite;
+            `;
+            document.body.appendChild(bubble);
+        }
+
+        // 初始化气泡
+        for(let i = 0; i < 15; i++) {
+            createBubble();
+        }
+    </script>
+
+    <style>
+        @keyframes floatUp {
+            from {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(-100vh) scale(1);
+                opacity: 0.3;
+            }
+        }
+    </style>
+</body>
+</html>

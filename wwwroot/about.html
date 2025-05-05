@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qin's Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <style>
+        /* 自定义过渡效果 */
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+
+        /* 自定义阴影效果 */
+        .custom-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 font-sans text-gray-700">
+    <!-- 返回主页按钮 -->
+    <a href="index.html"
+        class="fixed top-4 left-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md transition-all custom-shadow">
+        <i class="fa-solid fa-house"></i> 返回主页
+    </a>
+
+    <div class="container mx-auto p-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="left-section bg-white p-6 rounded-md custom-shadow transition-all">
+                <!-- 个人头像 -->
+                <div class="flex justify-center mb-4">
+                    <img src="./imag/header.png" alt="Personal Avatar" class="rounded-full w-32 h-32 object-cover">
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2">Hi, here's <strong>Qin</strong>👨‍💻:</h2>
+                <ul class="list-none pl-4 mt-4">
+                    <li class="my-2">🎓 2023 Chongqing University of Technology</li>
+                    <li class="my-2">🤖 Robotics engineering student</li>
+                </ul>
+
+                <div class="contact mt-6">
+                    <h3 class="text-lg font-bold text-gray-800"> Contact me:</h3>
+                    <p class="mt-2">📮 wqin12356@gmail.com</p>
+                    <!-- 电话号码 -->
+                    <p class="mt-2">📞 +86 17823891947</p>
+                </div>
+            </div>
+
+            <div class="right-section bg-white p-6 rounded-md custom-shadow transition-all">
+                <img src="./imag/flower.jpg" alt="Profile Image" class="w-full rounded-md" />
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>    
