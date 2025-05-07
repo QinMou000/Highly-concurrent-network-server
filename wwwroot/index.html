@@ -1,297 +1,150 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QinMou的摄影世界</title>
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --accent-color: #e74c3c;
-            --text-color: #34495e;
-        }
+    <!-- 页面元信息 -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Qin Home</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <!-- 引入外部样式表 -->
+    <link rel="stylesheet" type="text/css"
+        href="https://unpkg.com/dmego-home-page@latest/assets/css/onlinewebfonts.css" />
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/dmego-home-page@latest/assets/css/vno.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/dmego-home-page@latest/assets/css/iconfont.css">
 
-        body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background: #f5f6fa;
-        }
-
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 1rem;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
-
-        .nav-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-color);
-        }
-
-        .gallery {
-            max-width: 1200px;
-            margin: 80px auto 100px;
-            padding: 0 20px;
-            display: grid; /* 修改为grid布局 */
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .photo-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
-            cursor: pointer;
-        }
-
-        .photo-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .photo-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .photo-info {
-            padding: 15px;
-        }
-
-        .photo-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--primary-color);
-        }
-
-        .photo-desc {
-            font-size: 0.9em;
-            color: #7f8c8d;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 2000;
-            cursor: zoom-out;
-        }
-
-        .modal-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90%;
-            margin: auto;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .pagination {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px 20px;
-            border-radius: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-
-        .page-btn {
-            background: none;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            padding: 5px 12px;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .page-btn:hover:not(:disabled) {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .page-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .current-page {
-            display: flex;
-            align-items: center;
-            min-width: 60px;
-            justify-content: center;
-            font-weight: 500;
-        }
-
-        @media (max-width: 992px) {
-            .gallery {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .gallery {
-                grid-template-columns: 1fr;
-            }
-            .nav-links {
-                flex-direction: column;
-                align-items: center;
-                gap: 1rem;
-            }
-            .pagination {
-                bottom: 10px;
-                padding: 8px 15px;
-            }
-        }
-    </style>
+    <!-- 网站图标 -->
+    <link rel="apple-touch-icon" href="https://unpkg.com/dmego-home-page@latest/apple-touch-icon.png">
+    <link rel="icon" href="https://unpkg.com/dmego-home-page@latest/favicon.ico">
 </head>
+
 <body>
-    <nav class="navbar">
-        <div class="nav-links">
-            <a href="about.html">关于我</a>
-        </div>
-    </nav>
-    
-    <div class="gallery" id="gallery"></div>
+    <!-- 移动端菜单按钮 -->
+    <span class="mobile btn-mobile-menu">
+        <i class="social iconfont icon-list btn-mobile-menu__icon"></i>
+        <i class="social iconfont icon-angleup btn-mobile-close__icon hidden"></i>
+    </span>
 
-    <div class="pagination">
-        <button class="page-btn" id="prevPage">上一页</button>
-        <span class="current-page" id="pageInfo"></span>
-        <button class="page-btn" id="nextPage">下一页</button>
-    </div>
-
-    <div class="modal" id="imageModal">
-        <img class="modal-content" id="expandedImg">
-    </div>
-
-    <script>
-        const photos = [
-            { src: "imag/red.jpg", title: "红叶", desc: "摄于理工大学荷轩寝室楼下" },
-            { src: "imag/green.jpg", title: "绿叶", desc: "摄于理工大学德保食堂外" },
-            { src: "imag/pool.jpg", title: "大水池子", desc: "摄于理工大学两江校区" },
-            { src: "imag/fireflower.jpg", title: "烟花", desc: "摄于万灵古镇濑溪河畔" },
-            { src: "imag/sanxindui.jpg", title: "三星堆", desc: "摄于成都" },
-            { src: "imag/xiyang.jpg", title: "夕阳", desc: "摄于万灵古镇" },
-            { src: "imag/fukanwanling.jpg", title: "俯瞰万灵", desc: "摄于万灵古镇" },
-            { src: "imag/hua1.jpg", title: "花", desc: "摄于重庆理工大学两江校区操场旁" },
-            { src: "imag/shaokao1.jpg", title: "老姐", desc: "摄于涪陵" },
-            { src: "imag/shaokao2.jpg", title: "老姐", desc: "摄于涪陵" },
-            { src: "imag/guizhou2.jpg", title: "阿里西里大草原", desc: "摄于贵州" },
-            { src: "imag/guizhou1.jpg", title: "贵阳夜景", desc: "摄于贵州" },
-            { src: "imag/chongqin1.jpg", title: "重庆", desc: "摄于重庆" },
-            { src: "imag/hua2.jpg", title: "花", desc: "摄于重庆理工大学两江校区操场旁" },
-            { src: "imag/mingyuehu.jpg", title: "明月湖", desc: "摄于重庆两江新区明月湖" },
-            { src: "imag/qixi.jpg", title: "烟花", desc: "摄于万灵古镇濑溪河畔" }
-        ];
-
-        let currentPage = 1;
-        const perPage = 6;
-        const totalPages = Math.ceil(photos.length / perPage);
-        const gallery = document.getElementById('gallery');
-
-        function updateGallery() {
-            gallery.innerHTML = '';
-            const start = (currentPage - 1) * perPage;
-            const end = start + perPage;
-
-            photos.slice(start, end).forEach(photo => {
-                const card = document.createElement('div');
-                card.className = 'photo-card';
-                card.innerHTML = `
-                    <img src="${photo.src}" alt="${photo.title}" class="photo-img" loading="lazy">
-                    <div class="photo-info">
-                        <h3 class="photo-title">${photo.title}</h3>
-                        <p class="photo-desc">${photo.desc}</p>
+    <!-- 页面头部 -->
+    <header id="panel" class="panel-cover">
+        <div class="panel-main">
+            <div class="panel-main__inner panel-inverted">
+                <div class="panel-main__content">
+                    <!-- 圆形头像及信息 -->
+                    <div class="ih-item circle effect right_to_left">
+                        <a href="#" title="" class="blog-button">
+                            <div class="img">
+                                <!-- 头像图片 -->
+                                <img src="imag/header.png" alt="img" class="js-avatar iUp profilepic">
+                            </div>
+                            <div class="info iUp">
+                                <div class="info-back">
+                                    <h2>
+                                        Be Brave
+                                    </h2>
+                                    <p>
+                                        2025 · 勇敢
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
                     </div>
-                `;
-                gallery.appendChild(card);
-            });
 
-            document.getElementById('pageInfo').textContent = `${currentPage}/${totalPages}`;
-            document.getElementById('prevPage').disabled = currentPage === 1;
-            document.getElementById('nextPage').disabled = currentPage === totalPages;
-        }
+                    <!-- 网站标题 -->
+                    <h1 class="panel-cover__title panel-title iUp">
+                        <a href="#" title="Qin Home">Wang Qin</a>
+                    </h1>
 
-        // 初始化页面
-        updateGallery();
+                    <!-- 网站副标题 -->
+                    <p class="panel-cover__subtitle panel-subtitle iUp">Code Create Life</p>
 
-        // 分页按钮事件
-        document.getElementById('prevPage').addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                updateGallery();
-            }
-        });
+                    <!-- 分隔线 -->
+                    <hr class="panel-cover__divider iUp" />
 
-        document.getElementById('nextPage').addEventListener('click', () => {
-            if (currentPage < totalPages) {
-                currentPage++;
-                updateGallery();
-            }
-        });
+                    <!-- 描述文字 -->
+                    <p id="description" class="panel-cover__description iUp">
+                        如何得与凉风约, 不共尘沙一并来!
+                        <br />
+                        <strong>-「中牟道中」</strong>
+                    </p>
 
-        // 图片点击事件
-        document.getElementById('gallery').addEventListener('click', (e) => {
-            if (e.target.classList.contains('photo-img')) {
-                const modal = document.getElementById('imageModal');
-                const modalImg = document.getElementById('expandedImg');
-                modal.style.display = "block";
-                modalImg.src = e.target.src;
-            }
-        });
+                    <!-- 导航菜单 -->
+                    <div class="navigation-wrapper iUp">
+                        <div>
+                            <nav class="cover-navigation cover-navigation--primary">
+                                <ul class="navigation">
+                                    <li class="navigation__item">
+                                        <a href="/" class="blog-button">首页</a>
+                                    </li>
+                                    <li class="navigation__item">
+                                        <a href="https://blog.csdn.net/2301_80194476?spm=1000.2115.3001.5343"
+                                            class="blog-button" target="_blank">博客</a>
+                                    </li>
+                                    <li class="navigation__item">
+                                        <a href="album.html" class="blog-button" target="_blank">相册</a>
+                                    </li>
+                                    <li class="navigation__item">
+                                        <a href="about.html" class="blog-button" target="_blank">关于</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
 
-        // 关闭模态框
-        document.getElementById('imageModal').addEventListener('click', () => {
-            document.getElementById('imageModal').style.display = "none";
-        });
+                        <!-- 社交链接 -->
+                        <div class="iUp">
+                            <nav class="cover-navigation navigation--social">
+                                <ul class="navigation">
+                                    <li class="navigation__item">
+                                        <a href="https://www.cnblogs.com/QinMou/my-articles" title="github"
+                                            target="_blank">
+                                            <i class='social iconfont icon-github'></i>
+                                            <span class="label">github</span>
+                                        </a>
+                                    </li>
+                                    <li class="navigation__item">
+                                        <a href="https://www.cnblogs.com/QinMou/my-articles" title="cnblogs"
+                                            target="_blank">
+                                            <i class='social iconfont icon-cnblogs'></i>
+                                            <span class="label">cnblogs</span>
+                                        </a>
+                                    </li>
+                                    <li class="navigation__item">
+                                        <a href="https://www.zhihu.com/people/44-7-49-28-73" title="zhihu"
+                                            target="_blank">
+                                            <i class='social iconfont icon-zhihu'></i>
+                                            <span class="label">zhihu</span>
+                                        </a>
+                                    </li>
+                                    <li class="navigation__item">
+                                        <!-- 加密的邮箱地址 -->
+                                        <a href="mailto:wqin12356@gmail.com" title="email">
+                                            <i class='social iconfont icon-email'></i>
+                                            <span class="label">email</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        // 键盘事件
-        document.addEventListener('keydown', (e) => {
-            if (e.key === "Escape") {
-                document.getElementById('imageModal').style.display = "none";
-            } else if (e.key === 'ArrowLeft' && currentPage > 1) {
-                currentPage--;
-                updateGallery();
-            } else if (e.key === 'ArrowRight' && currentPage < totalPages) {
-                currentPage++;
-                updateGallery();
-            }
-        });
-    </script>
+            <!-- 背景覆盖层 -->
+            <div class="panel-cover--overlay cover-slate"></div>
+        </div>
+
+        <!-- 页脚备注 -->
+        <div class="remark iUp">
+            <p class="power">Powered By
+                <a href="https://github.com/features/actions" target="_blank"> GitHub Actions </a> And
+                <a href="https://hitokoto.cn/" target="_blank"> Hitokoto </a>
+            </p>
+        </div>
+    </header>
+
+    <!-- 引入外部脚本 -->
+    <script type="text/javascript" src="https://unpkg.com/dmego-home-page@latest/assets/js/main.js"></script>
 </body>
+
 </html>
