@@ -65,6 +65,7 @@ public:
             LOG(LogLevel::FATAL) << "socket error";
             exit(SOCKET_ERR);
         }
+        shutdown(_sockfd, SHUT_RDWR);
         LOG(LogLevel::INFO) << "socket success";
     }
     void BindOrDie(uint16_t port) override
