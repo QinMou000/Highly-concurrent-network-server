@@ -95,7 +95,7 @@
             color: #7f8c8d;
             margin-bottom: 5px;
         }
-        
+
         .photo-date {
             font-size: 0.8em;
             color: #95a5a6;
@@ -146,7 +146,7 @@
             background: rgba(255, 255, 255, 0.9);
             padding: 10px 20px;
             border-radius: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             z-index: 1000;
         }
 
@@ -188,11 +188,13 @@
             .gallery {
                 grid-template-columns: 1fr;
             }
+
             .nav-links {
                 flex-direction: column;
                 align-items: center;
                 gap: 1rem;
             }
+
             .pagination {
                 bottom: 10px;
                 padding: 8px 15px;
@@ -200,6 +202,7 @@
         }
     </style>
 </head>
+
 <body>
     <nav class="navbar">
         <div class="nav-links">
@@ -207,7 +210,7 @@
             <a href="about.html">关于我</a>
         </div>
     </nav>
-    
+
     <div class="gallery" id="gallery"></div>
 
     <div class="pagination">
@@ -222,6 +225,10 @@
 
     <script>
         const photos = [
+            { src: "imag/xiaoshihou1.jpg", title: "大头照", desc: "摄于小时候" },
+            { src: "imag/xiaoshihou2.jpg", title: "白银滩", desc: "摄于濑溪河白银滩" },
+            { src: "imag/xiaoshihou3.jpg", title: "吉他", desc: "摄于老宅门前" },
+            { src: "imag/xiaoshihou4.jpg", title: "老房子", desc: "摄于老宅卧室" },
             { src: "imag/red.jpg", title: "红叶", desc: "摄于理工大学荷轩寝室楼下 2024-12-09" },
             { src: "imag/green.jpg", title: "绿叶", desc: "摄于理工大学德保食堂外 2024-12-09" },
             { src: "imag/pool.jpg", title: "大水池子", desc: "摄于理工大学两江校区 2024-11-03 冬天，但那天天气很好" },
@@ -245,10 +252,6 @@
             { src: "imag/anfu3.jpg", title: "高中教室", desc: "摄于安富中学 2023-04-30 距离高考还有37天" },
             { src: "imag/junxun.jpg", title: "军训", desc: "摄于重庆理工大学两江校区操场" },
             { src: "imag/anfu2.jpg", title: "高考前夕", desc: "摄于安富中学 2023-06-05 距离高考还有1天" },
-            { src: "imag/xiaoshihou1.jpg", title: "大头照", desc: "摄于小时候" },
-            { src: "imag/xiaoshihou2.jpg", title: "白银滩", desc: "摄于濑溪河白银滩" },
-            { src: "imag/xiaoshihou3.jpg", title: "吉他", desc: "摄于老宅门前" },
-            { src: "imag/xiaoshihou4.jpg", title: "老房子", desc: "摄于老宅卧室" },
         ];
 
         // 从描述中提取日期的函数
@@ -276,13 +279,13 @@
             photos.slice(start, end).forEach(photo => {
                 const card = document.createElement('div');
                 card.className = 'photo-card';
-                
+
                 // 提取日期
                 const date = extractDate(photo.desc);
-                
+
                 // 移除描述中的日期部分
                 const descWithoutDate = photo.desc.replace(/\d{4}-\d{1,2}-\d{1,2}/, '').trim();
-                
+
                 card.innerHTML = `
                     <img src="${photo.src}" alt="${photo.title}" class="photo-img" loading="lazy">
                     <div class="photo-info">
@@ -322,10 +325,10 @@
             if (e.target.classList.contains('photo-img')) {
                 const modal = document.getElementById('imageModal');
                 const modalImg = document.getElementById('expandedImg');
-                
+
                 // 设置图片源
                 modalImg.src = e.target.src;
-                
+
                 // 显示模态框并添加激活类以触发动画
                 modal.style.display = "flex";
                 setTimeout(() => {
@@ -361,4 +364,5 @@
         });
     </script>
 </body>
+
 </html>

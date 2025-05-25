@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qin的技术博客 | wangruqin.site</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #f39c12;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --gray: #95a5a6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'PingFang SC', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 导航栏 */
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* 主内容区 */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 2rem;
+        }
+
+        /* 文章卡片 */
+        .post-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .post-content {
+            padding: 1.5rem;
+        }
+
+        .post-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-title a {
+            color: var(--dark);
+            text-decoration: none;
+        }
+
+        .post-meta {
+            display: flex;
+            gap: 1rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-tag {
+            display: inline-block;
+            background: var(--light);
+            color: var(--primary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+
+        /* 侧边栏 */
+        .sidebar-widget {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .widget-title {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+
+        /* 代码高亮样式 */
+        pre {
+            background: #282c34;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            color: #abb2bf;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <nav>
+            <a href="https://wangruqin.site/blog.html" class="logo">Qin的技术博客</a>
+            <div class="nav-links">
+                <a href="/">首页</a>
+                <a href="/projects">项目</a>
+                <a href="about.html">关于</a>
+                <a href="https://blog.csdn.net/2301_80194476?spm=1000.2115.3001.5343" target="_blank">CSDN</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 主内容区 -->
+    <div class="container">
+        <!-- 文章列表 -->
+        <main>
+            <article class="post-card">
+                <div class="post-content">
+                    <h2 class="post-title"><a href="./blog/html/MySql_suoyin.html">MySql索引</a></h2>
+                    <div class="post-meta">
+                        <span>2024年3月15日</span>
+                        <span>阅读量: 1.2k</span>
+                    </div>
+                    <div>
+                        <span class="post-tag">MySql</span>
+                        <span class="post-tag">后端</span>
+                    </div>
+                    <p>本文探讨MySql中的索引实现与原理</p>
+
+                </div>
+            </article>
+
+            <article class="post-card">
+                <div class="post-content">
+                    <h2 class="post-title"><a href="./blog/html/12.html">线程概念与控制</a></h2>
+                    <div class="post-meta">
+                        <span>2024年2月28日</span>
+                        <span>阅读量: 892</span>
+                    </div>
+                    <div>
+                        <span class="post-tag">C++</span>
+                        <span class="post-tag">性能优化</span>
+                    </div>
+                    <p>深入探讨什么时线程</p>
+                </div>
+            </article>
+        </main>
+
+        <!-- 侧边栏 -->
+        <aside>
+            <div class="sidebar-widget">
+                <h3 class="widget-title">搜索</h3>
+                <input type="text" placeholder="输入关键词..."
+                    style="width:100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+            </div>
+
+            <div class="sidebar-widget">
+                <h3 class="widget-title">分类</h3>
+                <ul style="list-style: none;">
+                    <li style="padding: 0.3rem 0;"><a href="#"
+                            style="text-decoration: none; color: var(--dark);">人工智能</a></li>
+                    <li style="padding: 0.3rem 0;"><a href="#"
+                            style="text-decoration: none; color: var(--dark);">前端开发</a></li>
+                    <li style="padding: 0.3rem 0;"><a href="#"
+                            style="text-decoration: none; color: var(--dark);">系统编程</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-widget">
+                <h3 class="widget-title">热门文章</h3>
+                <div style="margin-top: 0.5rem;">
+                    <div style="padding: 0.5rem 0; border-bottom: 1px dashed #eee;">
+                        <a href="#" style="font-size: 0.9rem; text-decoration: none; color: var(--dark);">Rust并发编程指南</a>
+                    </div>
+                    <div style="padding: 0.5rem 0; border-bottom: 1px dashed #eee;">
+                        <a href="#"
+                            style="font-size: 0.9rem; text-decoration: none; color: var(--dark);">WebAssembly实战</a>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- 页脚 -->
+    <footer style="background: var(--dark); color: white; text-align: center; padding: 2rem; margin-top: 2rem;">
+        <p>© 2024 王如钦的个人博客 | Powered by Markdown & C++</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--gray);">
+            <a href="https://wangruqin.site" style="color: var(--light); text-decoration: none;">首页</a> |
+            <a href="/rss" style="color: var(--light); text-decoration: none;">RSS订阅</a>
+        </p>
+    </footer>
+
+    <!-- 可选JavaScript -->
+    <script>
+        // 简单的交互示例
+        document.querySelectorAll('.post-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'A') {
+                    const link = card.querySelector('.post-title a');
+                    window.location.href = link.href;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
