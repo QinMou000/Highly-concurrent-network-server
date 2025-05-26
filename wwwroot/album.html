@@ -1,168 +1,116 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QinMou的摄影世界</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>影像记忆 | wangruqin.site</title>
+    
     <style>
         :root {
             --primary-color: #2c3e50;
             --accent-color: #e74c3c;
-            --text-color: #34495e;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            --gutter: 20px;
         }
 
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background: #f5f6fa;
-        }
-
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 1rem;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
-
-        .nav-links {
+            margin: 0;
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
-            gap: 2rem;
+            flex-direction: column;
+            background: rgba(45,45,45,0.95);
         }
 
-        .nav-links a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
+        .panel-cover {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .nav-links a:hover {
-            color: var(--accent-color);
+        .gallery-container {
+            flex: 1;
+            max-width: 1400px;
+            margin: 40px auto 0;
+            padding: 0 var(--gutter);
+            position: relative;
         }
 
-        .gallery {
-            max-width: 1200px;
-            margin: 80px auto 100px;
-            padding: 0 20px;
+        .masonry-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--gutter);
+            padding-bottom: 100px;
+            min-height: 70vh;
         }
 
         .photo-card {
-            background: white;
-            border-radius: 10px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1);
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
-            cursor: pointer;
+            aspect-ratio: 16/9;
         }
 
-        .photo-card:hover {
-            transform: translateY(-5px);
+        .img-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
 
         .photo-img {
             width: 100%;
-            height: 200px;
+            height: 100%;
             object-fit: cover;
-            display: block;
+            cursor: zoom-in;
+            background: rgba(0,0,0,0.1);
         }
 
-        .photo-info {
+        .photo-meta {
             padding: 15px;
         }
 
         .photo-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--primary-color);
+            color: #fff;
+            margin: 0 0 8px;
+            font-size: 16px;
         }
 
         .photo-desc {
-            font-size: 0.9em;
-            color: #7f8c8d;
-            margin-bottom: 5px;
-        }
-
-        .photo-date {
-            font-size: 0.8em;
-            color: #95a5a6;
-            font-style: italic;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 2000;
-            cursor: zoom-out;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal.active {
-            opacity: 1;
-        }
-
-        .modal-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90%;
-            opacity: 0;
-            transform: scale(0.95);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        .modal.active .modal-content {
-            opacity: 1;
-            transform: scale(1);
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            margin: 0;
         }
 
         .pagination {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            position: sticky;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(45,45,45,0.95) 60%, transparent);
+            padding: 20px 0;
             display: flex;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px 20px;
-            border-radius: 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            justify-content: center;
+            gap: 20px;
+            backdrop-filter: blur(10px);
             z-index: 1000;
         }
 
         .page-btn {
-            background: none;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            padding: 5px 12px;
-            border-radius: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: #fff;
+            padding: 10px 30px;
+            border-radius: 25px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
 
         .page-btn:hover:not(:disabled) {
-            background: var(--primary-color);
-            color: white;
+            background: rgba(255,255,255,0.2);
         }
 
         .page-btn:disabled {
@@ -170,60 +118,71 @@
             cursor: not-allowed;
         }
 
-        .current-page {
-            display: flex;
-            align-items: center;
-            min-width: 60px;
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: none;
             justify-content: center;
-            font-weight: 500;
+            align-items: center;
+            z-index: 9999;
         }
 
-        @media (max-width: 992px) {
-            .gallery {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 8px;
+            transform: scale(0.95);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .modal-active .modal-content {
+            transform: scale(1);
+            opacity: 1;
         }
 
         @media (max-width: 768px) {
-            .gallery {
+            .masonry-grid {
                 grid-template-columns: 1fr;
+                min-height: 50vh;
             }
-
-            .nav-links {
-                flex-direction: column;
-                align-items: center;
-                gap: 1rem;
-            }
-
+            
             .pagination {
-                bottom: 10px;
-                padding: 8px 15px;
+                padding: 15px 10px;
+                gap: 10px;
+            }
+            
+            .page-btn {
+                padding: 8px 20px;
+                font-size: 14px;
             }
         }
     </style>
 </head>
 
 <body>
-    <nav class="navbar">
-        <div class="nav-links">
-            <a href="index.html" class="button">我的主页</a>
-            <a href="about.html">关于我</a>
+    <div class="panel-cover">
+        <main class="gallery-container">
+            <div class="masonry-grid" id="gallery"></div>
+        </main>
+
+        <div class="pagination">
+            <button class="page-btn" id="prevPage">← 上一页</button>
+            <span id="pageInfo"></span>
+            <button class="page-btn" id="nextPage">下一页 →</button>
         </div>
-    </nav>
 
-    <div class="gallery" id="gallery"></div>
-
-    <div class="pagination">
-        <button class="page-btn" id="prevPage">上一页</button>
-        <span class="current-page" id="pageInfo"></span>
-        <button class="page-btn" id="nextPage">下一页</button>
-    </div>
-
-    <div class="modal" id="imageModal">
-        <img class="modal-content" id="expandedImg">
+        <div class="modal-overlay" id="modalOverlay">
+            <img src="#" alt="大图预览" class="modal-content" id="modalImg">
+        </div>
     </div>
 
     <script>
+        // 照片数据
         const photos = [
             { src: "imag/xiaoshihou1.jpg", title: "大头照", desc: "摄于小时候" },
             { src: "imag/xiaoshihou2.jpg", title: "白银滩", desc: "摄于濑溪河白银滩" },
@@ -254,115 +213,94 @@
             { src: "imag/anfu2.jpg", title: "高考前夕", desc: "摄于安富中学 2023-06-05 距离高考还有1天" },
         ];
 
-        // 从描述中提取日期的函数
-        function extractDate(desc) {
-            // 使用正则表达式匹配日期格式
-            const dateMatch = desc.match(/\d{4}-\d{1,2}-\d{1,2}/); // 正则表达式？？？！！！
-            if (dateMatch) {
-                // 将日期字符串转换为更友好的格式
-                const date = new Date(dateMatch[0]);
-                return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+        const config = {
+            currentPage: 1,
+            get perPage() {
+                const width = window.innerWidth;
+                return width >= 1200 ? 6 :  // 3列×2行
+                       width >= 768 ? 4 :   // 2列×2行
+                       2;                   // 1列×2行
+            },
+            get totalPages() {
+                return Math.ceil(photos.length / this.perPage);
             }
-            return "日期未知";
-        }
+        };
 
-        let currentPage = 1;
-        const perPage = 6;
-        const totalPages = Math.ceil(photos.length / perPage);
-        const gallery = document.getElementById('gallery');
-
-        function updateGallery() {
-            gallery.innerHTML = '';
-            const start = (currentPage - 1) * perPage;
-            const end = start + perPage;
-
-            photos.slice(start, end).forEach(photo => {
-                const card = document.createElement('div');
-                card.className = 'photo-card';
-
-                // 提取日期
-                const date = extractDate(photo.desc);
-
-                // 移除描述中的日期部分
-                const descWithoutDate = photo.desc.replace(/\d{4}-\d{1,2}-\d{1,2}/, '').trim();
-
-                card.innerHTML = `
-                    <img src="${photo.src}" alt="${photo.title}" class="photo-img" loading="lazy">
-                    <div class="photo-info">
-                        <h3 class="photo-title">${photo.title}</h3>
-                        <p class="photo-desc">${descWithoutDate || '无描述'}</p>
-                        <p class="photo-date">拍摄时间: ${date}</p>
+        function initGallery() {
+            const start = (config.currentPage - 1) * config.perPage;
+            const end = start + config.perPage;
+            const gallery = document.getElementById('gallery');
+            
+            gallery.innerHTML = photos.slice(start, end).map(photo => `
+                <div class="photo-card">
+                    <div class="img-container">
+                        <img src="${photo.src}" 
+                             alt="${photo.title}" 
+                             class="photo-img"
+                             loading="lazy">
                     </div>
-                `;
-                gallery.appendChild(card);
+                    <div class="photo-meta">
+                        <h3 class="photo-title">${photo.title}</h3>
+                        <p class="photo-desc">${photo.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // 补充空白卡片
+            const remaining = config.perPage - (end - start);
+            if(remaining > 0) {
+                gallery.innerHTML += Array(remaining).fill('<div class="photo-card" style="visibility:hidden"></div>').join('');
+            }
+
+            // 添加点击事件
+            document.querySelectorAll('.photo-img').forEach(img => {
+                img.addEventListener('click', showModal);
             });
 
-            document.getElementById('pageInfo').textContent = `${currentPage}/${totalPages}`;
-            document.getElementById('prevPage').disabled = currentPage === 1;
-            document.getElementById('nextPage').disabled = currentPage === totalPages;
+            updatePagination();
         }
 
-        // 初始化页面
-        updateGallery();
+        function updatePagination() {
+            document.getElementById('pageInfo').textContent = 
+                `${config.currentPage}/${config.totalPages}`;
+            document.getElementById('prevPage').disabled = config.currentPage === 1;
+            document.getElementById('nextPage').disabled = config.currentPage === config.totalPages;
+        }
 
-        // 分页按钮事件
+        function showModal(e) {
+            const modal = document.getElementById('modalOverlay');
+            const modalImg = document.getElementById('modalImg');
+            modalImg.src = e.target.src;
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('modal-active'), 10);
+        }
+
+        // 事件监听
         document.getElementById('prevPage').addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                updateGallery();
+            if (config.currentPage > 1) {
+                config.currentPage--;
+                initGallery();
+                window.scrollTo(0, 0);
             }
         });
 
         document.getElementById('nextPage').addEventListener('click', () => {
-            if (currentPage < totalPages) {
-                currentPage++;
-                updateGallery();
+            if (config.currentPage < config.totalPages) {
+                config.currentPage++;
+                initGallery();
+                window.scrollTo(0, 0);
             }
         });
 
-        // 图片点击事件 - 修改为居中显示
-        document.getElementById('gallery').addEventListener('click', (e) => {
-            if (e.target.classList.contains('photo-img')) {
-                const modal = document.getElementById('imageModal');
-                const modalImg = document.getElementById('expandedImg');
-
-                // 设置图片源
-                modalImg.src = e.target.src;
-
-                // 显示模态框并添加激活类以触发动画
-                modal.style.display = "flex";
-                setTimeout(() => {
-                    modal.classList.add('active');
-                }, 10);
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove('modal-active');
+                setTimeout(() => modalOverlay.style.display = 'none', 300);
             }
         });
 
-        // 关闭模态框
-        document.getElementById('imageModal').addEventListener('click', () => {
-            const modal = document.getElementById('imageModal');
-            modal.classList.remove('active');
-            setTimeout(() => {
-                modal.style.display = "none";
-            }, 300);
-        });
-
-        // 键盘事件
-        document.addEventListener('keydown', (e) => {
-            if (e.key === "Escape") {
-                const modal = document.getElementById('imageModal');
-                modal.classList.remove('active');
-                setTimeout(() => {
-                    modal.style.display = "none";
-                }, 300);
-            } else if (e.key === 'ArrowLeft' && currentPage > 1) {
-                currentPage--;
-                updateGallery();
-            } else if (e.key === 'ArrowRight' && currentPage < totalPages) {
-                currentPage++;
-                updateGallery();
-            }
-        });
+        window.addEventListener('resize', initGallery);
+        window.addEventListener('load', initGallery);
     </script>
 </body>
-
 </html>
