@@ -1,8 +1,22 @@
 #pragma once
 #include "Common.hpp"
+#include "md4c-html.h"
+#include <string>
+
+
+
 class Tool
 {
 public:
+    static void md4c_output_callback(const MD_CHAR* data, MD_SIZE size, void* userdata) {
+        std::string* html = static_cast<std::string*>(userdata);
+        html->append(data, size);
+    }
+    static std::string MarkdownToHtml(const std::string& md) {
+        std::string html;
+        md_html(md.c_str(), md.size(), md4c_output_callback, &html, 0, 0);
+        return html;
+    }
     static bool GetFileContent(std::string filename, std::string *out)
     {
         // std::ifstream in(filename);

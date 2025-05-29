@@ -31,5 +31,8 @@
 *.out
 *.app
 
-#Log files
+# Log files
 *.log
+
+# Md files
+*.md

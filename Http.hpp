@@ -117,6 +117,8 @@ public:
             return "image/jpeg";
         else if (suffix == ".png")
             return "imag/png";
+        else if (suffix == ".md")
+            return "text/markdown";
         else
             return "";
     }
@@ -138,24 +140,39 @@ public:
 
             // 搞半天结果是中文不支持的原因，避免用中文
 
-            SetHeader("Content-Type", suffix);
+            SetHeader("Content-Type", "text/html; charset=utf-8");
             SetHeader("Content-Length", std::to_string(filesize));
             Tool::GetFileContent(_target_file, &_text); // 读取404页面到_text里
         }
         else
         {
-            SetCode(200);
-            // 正文大小
-            int filesize = Tool::FileSize(_target_file);
-            // 文件类型（后缀）
-            std::string suffix = Uri2Suffix(_target_file); // 将Uri转为文件后缀返回
+            std::string suffix = Uri2Suffix(_target_file);
+            if (suffix == "text/markdown") {
+                // 读取md文件内容
+                std::string md_content;
+                Tool::GetFileContent(_target_file, &md_content);
+                // 转为HTML
+                std::string html = Tool::MarkdownToHtml(md_content);
+                SetCode(200);
+                SetHeader("Content-Type", "text/html; charset=utf-8");
+                SetHeader("Content-Length", std::to_string(html.size()));
+                SetText(html);
+            } 
+            else 
+            {
+                SetCode(200);
+                // 正文大小
+                int filesize = Tool::FileSize(_target_file);
+                // 文件类型（后缀）
+                suffix = Uri2Suffix(_target_file); // 将Uri转为文件后缀返回
 
-            // std::cout << "_target_file: " << _target_file << std::endl;
-            // std::cout << "suffix: " << suffix << std::endl;
+                // std::cout << "_target_file: " << _target_file << std::endl;
+                // std::cout << "suffix: " << suffix << std::endl;
 
-            SetHeader("Content-Type", suffix);
-            SetHeader("Content-Length", std::to_string(filesize));
-            // SetHeader("Set_Cookie", "username=wangqin;"); // 设置cookie
+                SetHeader("Content-Type", "text/html; charset=utf-8");
+                SetHeader("Content-Length", std::to_string(filesize));
+                // SetHeader("Set_Cookie", "username=wangqin;"); // 设置cookie
+            }
         }
     }
     void SetText(std::string &text)
