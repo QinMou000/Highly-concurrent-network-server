@@ -181,7 +181,6 @@
             <a href="https://wangruqin.site/blog.html" class="logo">Qin的技术博客</a>
             <div class="nav-links">
                 <a href="/">首页</a>
-                <a href="/projects">项目</a>
                 <a href="profile.html">关于</a>
                 <a href="https://blog.csdn.net/2301_80194476?spm=1000.2115.3001.5343" target="_blank">CSDN</a>
             </div>
@@ -192,6 +191,20 @@
     <div class="container">
         <!-- 文章列表 -->
         <main>
+            <article class="post-card" data-category="Linux">
+                <div class="post-content">
+                    <h2 class="post-title"><a href="./blog/md/Linux_xianchengtongbuyuhuchi.md">Linux线程同步与互斥</a></h2>
+                    <div class="post-meta">
+                        <span>2024年6月3日</span>
+                        <span>阅读量: 1.0k</span>
+                    </div>
+                    <div>
+                        <span class="post-tag">Linux</span>
+                        <span class="post-tag">后端</span>
+                    </div>
+                    <p>线程互斥，互斥量，条件变量，生产消费者模型，POSIX信号量，线程池设计，日志与策略模式，单例模式，线程安全，重入问题，死锁</p>
+                </div>
+            </article>
             <article class="post-card" data-category="Linux">
                 <div class="post-content">
                     <h2 class="post-title"><a href="./blog/md/Linux_xianchenggainian.md">Linux线程概念与控制</a></h2>
@@ -527,11 +540,10 @@
                 <h3 class="widget-title">热门文章</h3>
                 <div style="margin-top: 0.5rem;">
                     <div style="padding: 0.5rem 0; border-bottom: 1px dashed #eee;">
-                        <a href="#" style="font-size: 0.9rem; text-decoration: none; color: var(--dark);">Rust并发编程指南</a>
+                        <a href="./blog/md/Linux_ELFfile.md" style="font-size: 0.9rem; text-decoration: none; color: var(--dark);">ELF文件 动静态库原理</a>
                     </div>
                     <div style="padding: 0.5rem 0; border-bottom: 1px dashed #eee;">
-                        <a href="#"
-                            style="font-size: 0.9rem; text-decoration: none; color: var(--dark);">WebAssembly实战</a>
+                        <a href="./blog/md/Linux_xianchenggainian.md" style="font-size: 0.9rem; text-decoration: none; color: var(--dark);">线程概念与控制</a>
                     </div>
                 </div>
             </div>
@@ -542,8 +554,7 @@
     <footer style="background: var(--dark); color: white; text-align: center; padding: 2rem; margin-top: 2rem;">
         <p>© 2024 Qin的个人博客 | Powered by Markdown & C++</p>
         <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--gray);">
-            <a href="https://wangruqin.site" style="color: var(--light); text-decoration: none;">首页</a> |
-            <a href="/rss" style="color: var(--light); text-decoration: none;">RSS订阅</a>
+            <a href="https://wangruqin.site" style="color: var(--light); text-decoration: none;">首页</a>
         </p>
     </footer>
 
