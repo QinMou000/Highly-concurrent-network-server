@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <fcntl.h>
 #include <functional>
 #include <sys/wait.h>
 #include <fstream>
@@ -35,7 +36,16 @@ enum ExitCode
     LISTEN_ERR,
     FORK_ERR,
     ACCEPT_ERR,
-    CONNECT_ERR
+    CONNECT_ERR,
+    CREATE_EPOLL_ERR
 };
 
-#define CONV(addr) (struct sockaddr*)(&addr)
+#define CONV(addr) (struct sockaddr *)(&addr)
+
+void SetNonBlock(int fd)
+{
+    int fl = fcntl(fd, F_GETFL);
+    if (fl < 0)
+        return;
+    fcntl(fd, F_SETFL, fl | O_NONBLOCK);
+}

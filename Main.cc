@@ -1,11 +1,10 @@
-#include "Tcpserver.hpp"
+#include "Http.hpp"
+#include "Reactor.hpp"
+#include "Listener.hpp"
 #include "Socket.hpp"
 #include "Common.hpp"
-#include "Http.hpp"
 #include "daemon.hpp"
 #include <fstream>
-// #include "NetCal.hpp"
-// #include "daemon.hpp"
 
 void Usage(std::string proc)
 {
@@ -28,16 +27,22 @@ int main(int argc, char *argv[])
         Usage(argv[0]);
         exit(USAGE_ERR);
     }
-    uint16_t server_port = std::stoi(argv[1]);
+    uint16_t port = std::stoi(argv[1]);
 
     FileLogStrategy();
 
     std::unique_ptr<Http> http = std::make_unique<Http>();
 
-    std::unique_ptr<TcpServer> server = std::make_unique<TcpServer>(server_port, [&http](std::shared_ptr<Socket> &sock, InetAddr &addr)
-                                                                    { http->HanderRequest(sock, addr); });
+    std::shared_ptr<Connection> Con = std::make_shared<Listener>(port);
 
-    server->Start();
+    Con->SetHander([&http](std::string &inbuffer) -> std::string
+                   { return http->HanderRequest(inbuffer); }); // TODO
+
+    std::unique_ptr<Reactor> R = std::make_unique<Reactor>();
+
+    R->AddConnection(Con);
+
+    R->Loop();
 
     return 0;
 }

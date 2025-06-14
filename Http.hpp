@@ -9,6 +9,8 @@ const std::string webroot = "./wwwroot";
 const std::string homepage = "index.html";
 const std::string linesep = ": ";
 
+using namespace LogModule;
+
 class Request
 {
 public:
@@ -147,7 +149,8 @@ public:
         else
         {
             std::string suffix = Uri2Suffix(_target_file);
-            if (suffix == "text/markdown") {
+            if (suffix == "text/markdown")
+            {
                 // 读取md文件内容
                 std::string md_content;
                 Tool::GetFileContent(_target_file, &md_content);
@@ -157,8 +160,8 @@ public:
                 SetHeader("Content-Type", "text/html; charset=utf-8");
                 SetHeader("Content-Length", std::to_string(html.size()));
                 SetText(html);
-            } 
-            else 
+            }
+            else
             {
                 SetCode(200);
                 // 正文大小
@@ -201,29 +204,21 @@ class Http
 public:
     Http() {}
     ~Http() {}
-    void HanderRequest(std::shared_ptr<Socket> &sock, InetAddr &addr)
+    std::string HanderRequest(std::string &recv_str)
     {
-        std::string recv_str;
-        int n = sock->Recv(&recv_str); // 获取客户端请求
-        // 假设就是读到了一个完整报文
-        if (n > 0)
-        {
-            Request req;
-            // 将请求序列化为request
-            req.Deserialize(recv_str);
-            LOG(LogLevel::INFO) << "client: " << addr.StringAddr();
-            // 构建res
-            Response resp;
-            // 分析request，主要是看请求哪个网页
-            resp.SetTargetFile(req.Uri());
-            // 将文件写入正文
-            resp.MakeResp();
-            // 将resp序列化
-            std::string resp_str = resp.Serialize();
 
-            // 返回response
-            sock->Send(resp_str);
-        }
+        Request req;
+        // 将请求序列化为request
+        req.Deserialize(recv_str);
+        // 构建res
+        Response resp;
+        // 分析request，主要是看请求哪个网页
+        resp.SetTargetFile(req.Uri());
+        // 将文件写入正文
+        resp.MakeResp();
+        // 将resp序列化
+        std::string resp_str = resp.Serialize();
+        return resp_str;
     }
 
 private:

@@ -22,11 +22,12 @@ public:
     virtual void SocketOrDie() = 0; // 纯虚函数，等子类实现
     virtual void BindOrDie(uint16_t port) = 0;
     virtual void ListenOrDie(int backlog) = 0;
-    virtual std::shared_ptr<Socket> Accept(InetAddr *client) = 0;
+    virtual int Accept(InetAddr *client) = 0;
     virtual void Close() = 0;
     virtual int Send(const std::string message) = 0;
     virtual int Recv(std::string *out) = 0;
     virtual int Connect(InetAddr &server) = 0;
+    virtual int Fd() = 0;
 
 public:
     void BuildTcpSocket(uint16_t port, int backlog = 16)
@@ -90,7 +91,15 @@ public:
         }
         LOG(LogLevel::INFO) << "listen success";
     }
-    std::shared_ptr<Socket> Accept(InetAddr *client) override
+    // 底层没有连接了
+#define ACCEPT_DONE -1
+
+// 被系统调用中断了会被设置的错误码 这里我们不管 继续读取
+#define ACCEPT_CONTINUE -2
+
+// 真的读取出错了
+#define ACCEPT_ERR -3
+    int Accept(InetAddr *client) override
     {
         struct sockaddr_in peer;
         socklen_t len = sizeof(peer);
@@ -98,11 +107,19 @@ public:
         // std::cout << std::to_string(peer.sin_addr.s_addr) << std::endl;
         if (fd < 0)
         {
-            LOG(LogLevel::FATAL) << "accept error";
-            exit(ACCEPT_ERR);
+            if (errno == EAGAIN || errno == EWOULDBLOCK)
+                return ACCEPT_DONE; // 底层没有连接了
+            else if (errno == EINTR)
+                return ACCEPT_CONTINUE; // 被系统调用中断了会被设置的错误码 这里我们不管 继续读取
+            else
+            {
+                LOG(LogLevel::WARNING) << "accept error";
+                return ACCEPT_ERR; // 真的读取出错了
+            }
         }
         client->SetAddr(peer);
-        return std::make_shared<TcpSocket>(fd);
+        return fd;
+        // return std::make_shared<TcpSocket>(fd);
     }
     void Close() override
     {
@@ -129,6 +146,10 @@ public:
     {
         // 客户端连接服务器
         return ::connect(_sockfd, server.NetAddrPtr(), server.AddrLen());
+    }
+    int Fd()
+    {
+        return _sockfd;
     }
 
 private:
