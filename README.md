@@ -90,3 +90,5 @@ curl http://localhost:8080
 ## 贡献
 
 欢迎提交Issue和Pull Request来帮助改进项目。 
+
+[![OSS Compass Analyze](https://compass.gitee.com/chart/sms0srck.svg?metric=overview&y_trans=1&range=6M)](https://compass.gitee.com/analyze/sms0srck#topic_overview)
